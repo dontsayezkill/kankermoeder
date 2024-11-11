@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="nl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Banana War</title>
+    <link rel="stylesheet" href="css/style.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="js/login.js"></script>
+    <script src="js/bananacounter.js"></script>
+</head>
+
+<body>
+    <nav id="navbar">
+        <div class="logo">
+            <img src="images/Schermafbeelding 2024-11-06 095026.png" alt="Logo">
+        </div>
+        <ul>
+            <li><a href="#home">Home</a></li>
+            <li><a href="MiniGames.html">Mini Games</a></li>
+            <li><a href="Crates.html">Crates</a></li>
+            <li><a href="#contact">Contact</a></li>
+            <li><a href="Valuta.html">Valuta</a></li>
+            <li><a href="#" id="login-btn">Login</a></li>
+        </ul>
+        <div class="balance">
+            <img src="Afbeeldingen page 2/image-removebg-preview (14).png" alt="BananaCoins" class="banana-icon">
+            <span id="banana-balance">1000</span> -BananaCoins
+        </div>
+    </nav>
+
+    <header class="hero" id="home">
+        <img src="images/Ape Holding Canon.jpg" alt="Aap met kanon" class="hero-image">
+        <div class="hero-text">
+            <h1>The Banana War</h1>
+            <h3>Bring humanity to victory</h3>
+            <button class="cta-button">Join the Battle</button>
+        </div>
+    </header>
+
+    <section class="content-section" id="treasures">
+        <img src="images/Golden Banana.jpg" alt="Golden Bananas" class="content-image">
+        <div class="content-text">
+            <h2>Treasures</h2>
+            <p>The monkeys have treasures on board. If you manage to capture the monkeys' ship without sinking the ship, you might be able to get your hands on them!</p>
+        </div>
+    </section>
+
+    <section class="content-section" id="currency">
+        <img src="images/Banana Coin.jpg" alt="Banana Coin" class="content-image">
+        <div class="content-text">
+            <h2>Currency</h2>
+            <p>After collecting enough bananacoins from stolen treasures, you can buy chests at the treasure chest shop. These chests contain weapon upgrades for your ship, with varying rarity. You can use the upgrades or sell them to other players.</p>
+        </div>
+    </section>
+
+    <footer class="footer" id="contact">
+        <div class="footer-content">
+            <img src="images/Schermafbeelding 2024-11-06 105418.png" alt="footer image" class="footer-image">
+            <div class="footer-text">
+                <p>&copy; 2024 The Banana War. All rights reserved.</p>
+                <p>Contact us: info@thebananawar.com</p>
+                <div class="social-media">
+                    <a href="#"><img src="images/facebook-icon.png" alt="Facebook"></a>
+                    <a href="#"><img src="images/twitter-icon.png" alt="Twitter"></a>
+                    <a href="#"><img src="images/instagram-icon.png" alt="Instagram"></a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <div class="bottombar">
+        <div class="bottombar-content">
+            <p>Contact EA Sports: <a href="mailto:support@ea.com">support@ea.com</a></p>
+        </div>
+    </div>
+
+    <!-- Modal for Login and Registration -->
+    <div id="login-modal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <div id="login-form">
+                <h2>Login</h2>
+                <input type="text" id="login-username" placeholder="Username">
+                <input type="password" id="login-password" placeholder="Password">
+                <button onclick="login()">Login</button>
+                <p>Don't have an account? <a href="#" id="show-register">Register here</a></p>
+            </div>
+            <div id="register-form" style="display: none;">
+                <h2>Register</h2>
+                <input type="text" id="register-username" placeholder="Username">
+                <input type="password" id="register-password" placeholder="Password">
+                <button onclick="register()">Register</button>
+                <p>Already have an account? <a href="#" id="show-login">Login here</a></p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        $(document).ready(function () {
+            // Load balance from localStorage
+            var balanceElement = document.getElementById("banana-balance");
+            var storedBalance = localStorage.getItem("bananaBalance");
+            if (storedBalance !== null) {
+                balanceElement.textContent = storedBalance;
+            }
+
+            $('a[href^="#"]').on('click', function (event) {
+                var target = $(this.getAttribute('href'));
+                if (target.length) {
+                    event.preventDefault();
+                    $('html, body').stop().animate({
+                        scrollTop: target.offset().top
+                    }, 1000);
+                }
+            });
+
+            // Modal functionality
+            var modal = document.getElementById("login-modal");
+            var btn = document.getElementById("login-btn");
+            var span = document.getElementsByClassName("close")[0];
+
+            btn.onclick = function () {
+                modal.style.display = "block";
+            }
+
+            span.onclick = function () {
+                modal.style.display = "none";
+            }
+
+            window.onclick = function (event) {
+                if (event.target == modal) {
+                    modal.style.display = "none";
+                }
+            }
+
+            $('#show-register').click(function () {
+                $('#login-form').hide();
+                $('#register-form').show();
+            });
+
+            $('#show-login').click(function () {
+                $('#register-form').hide();
+                $('#login-form').show();
+            });
+        });
+    </script>
+</body>
+
+</html>

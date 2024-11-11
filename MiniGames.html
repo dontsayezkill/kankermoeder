@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="nl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mini Games</title>
+    <link rel="stylesheet" href="css/MiniGames.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="js/bananacounter.js"></script>
+</head>
+
+<body>
+    <nav id="navbar">
+        <div class="logo">
+            <img src="images/Schermafbeelding 2024-11-06 095026.png" alt="Logo">
+        </div>
+        <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="MiniGames.html">Mini Games</a></li>
+            <li><a href="Crates.html">Crates</a></li>
+            <li><a href="#contact">Contact</a></li>
+            <li><a href="Valuta.html">Valuta</a></li>
+            <li><a href="#" id="login-btn">Login</a></li>
+        </ul>
+        <div class="balance">
+            <img src="Afbeeldingen page 2/image-removebg-preview (14).png" alt="BananaCoins" class="banana-icon">
+            <span id="banana-balance">1000</span> BananaCoins
+        </div>
+    </nav>
+
+    <header class="hero" id="home">
+        <div class="hero-text">
+            <h1>Mini Games</h1>
+            <h3>Try your luck and win more BananaCoins</h3>
+        </div>
+    </header>
+
+    <section class="content-section" id="heads-tails">
+        <div class="content-text">
+            <h2>Heads or Tails</h2>
+            <p>Bet your BananaCoins and try your luck with heads or tails. If you win, you double your inlay!</p>
+            <input type="number" id="bet-amount-heads-tails" placeholder="Enter your bet amount">
+            <button onclick="playHeadsTails()">Play Heads or Tails</button>
+        </div>
+    </section>
+
+    <section class="content-section" id="dice-game">
+        <div class="content-text">
+            <h2>Dice Game</h2>
+            <p>Bet your BananaCoins on a low (2-6) or high (8-12) outcome of two dice. If you win, you double your inlay!</p>
+            <input type="number" id="dice-bet-amount" placeholder="Enter your bet amount">
+            <button onclick="playDiceGame('low')">Bet Low (2-6)</button>
+            <button onclick="playDiceGame('high')">Bet High (8-12)</button>
+            <div id="dice-container">
+                <div id="dice1" class="dice">1</div>
+                <div id="dice2" class="dice">1</div>
+            </div>
+            <div id="dice-result"></div>
+        </div>
+    </section>
+
+    <footer class="footer" id="contact">
+        <div class="footer-content">
+            <img src="images/Schermafbeelding 2024-11-06 105418.png" alt="footer image" class="footer-image">
+            <div class="footer-text">
+                <p>&copy; 2024 The Banana War. All rights reserved.</p>
+                <p>Contact us: info@thebananawar.com</p>
+                <div class="social-media">
+                    <a href="#"><img src="images/facebook-icon.png" alt="Facebook"></a>
+                    <a href="#"><img src="images/twitter-icon.png" alt="Twitter"></a>
+                    <a href="#"><img src="images/instagram-icon.png" alt="Instagram"></a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <div class="bottombar">
+        <div class="bottombar-content">
+            <p>Contact EA Sports: <a href="mailto:support@ea.com">support@ea.com</a></p>
+        </div>
+    </div>
+
+    <!-- Modal for Login and Registration -->
+    <div id="login-modal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <div id="login-form">
+                <h2>Login</h2>
+                <input type="text" id="login-username" placeholder="Username">
+                <input type="password" id="login-password" placeholder="Password">
+                <button onclick="login()">Login</button>
+                <p>Don't have an account? <a href="#" id="show-register">Register here</a></p>
+            </div>
+            <div id="register-form" style="display: none;">
+                <h2>Register</h2>
+                <input type="text" id="register-username" placeholder="Username">
+                <input type="password" id="register-password" placeholder="Password">
+                <button onclick="register()">Register</button>
+                <p>Already have an account? <a href="#" id="show-login">Login here</a></p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        $(document).ready(function () {
+            // Load balance from localStorage
+            var balanceElement = document.getElementById("banana-balance");
+            var storedBalance = localStorage.getItem("bananaBalance");
+            if (storedBalance !== null) {
+                balanceElement.textContent = storedBalance;
+            }
+
+            $('a[href^="#"]').on('click', function (event) {
+                var target = $(this.getAttribute('href'));
+                if (target.length) {
+                    event.preventDefault();
+                    $('html, body').stop().animate({
+                        scrollTop: target.offset().top
+                    }, 1000);
+                }
+            });
+
+            // Modal functionality
+            var modal = document.getElementById("login-modal");
+            var btn = document.getElementById("login-btn");
+            var span = document.getElementsByClassName("close")[0];
+
+            btn.onclick = function () {
+                modal.style.display = "block";
+            }
+
+            span.onclick = function () {
+                modal.style.display = "none";
+            }
+
+            window.onclick = function (event) {
+                if (event.target == modal) {
+                    modal.style.display = "none";
+                }
+            }
+
+            $('#show-register').click(function () {
+                $('#login-form').hide();
+                $('#register-form').show();
+            });
+
+            $('#show-login').click(function () {
+                $('#register-form').hide();
+                $('#login-form').show();
+            });
+        });
+
+        function playHeadsTails() {
+            var betAmount = parseInt(document.getElementById("bet-amount-heads-tails").value);
+            var balanceElement = document.getElementById("banana-balance");
+            var currentBalance = parseInt(balanceElement.textContent);
+
+            if (isNaN(betAmount) || betAmount <= 0) {
+                alert("Please enter a valid bet amount.");
+                return;
+            }
+
+            if (currentBalance < betAmount) {
+                alert("Insufficient BananaCoins!");
+                return;
+            }
+
+            var result = Math.random() < 0.5 ? "heads" : "tails";
+            var win = Math.random() < 0.5;
+
+            if (win) {
+                currentBalance += betAmount;
+                alert("You won! The result was " + result + ". Your new balance is " + currentBalance + " BananaCoins.");
+            } else {
+                currentBalance -= betAmount;
+                alert("You lost! The result was " + result + ". Your new balance is " + currentBalance + " BananaCoins.");
+            }
+
+            balanceElement.textContent = currentBalance;
+            localStorage.setItem("bananaBalance", currentBalance);
+        }
+
+        function playDiceGame(betType) {
+            var betAmount = parseInt(document.getElementById("dice-bet-amount").value);
+            var balanceElement = document.getElementById("banana-balance");
+            var currentBalance = parseInt(balanceElement.textContent);
+
+            if (isNaN(betAmount) || betAmount <= 0) {
+                alert("Please enter a valid bet amount.");
+                return;
+            }
+
+            if (currentBalance < betAmount) {
+                alert("Insufficient BananaCoins!");
+                return;
+            }
+
+            var dice1 = Math.floor(Math.random() * 6) + 1;
+            var dice2 = Math.floor(Math.random() * 6) + 1;
+            var total = dice1 + dice2;
+
+            // Update dice visuals
+            document.getElementById("dice1").textContent = dice1;
+            document.getElementById("dice2").textContent = dice2;
+
+            var win = (betType === 'low' && total >= 2 && total <= 6) || (betType === 'high' && total >= 8 && total <= 12);
+
+            if (win) {
+                currentBalance += betAmount;
+                alert("You won! The dice rolled " + total + ". Your new balance is " + currentBalance + " BananaCoins.");
+            } else {
+                currentBalance -= betAmount;
+                alert("You lost! The dice rolled " + total + ". Your new balance is " + currentBalance + " BananaCoins.");
+            }
+
+            balanceElement.textContent = currentBalance;
+            localStorage.setItem("bananaBalance", currentBalance);
+
+            document.getElementById("dice-result").textContent = "Dice rolled: " + total;
+        }
+    </script>
+</body>
+
+</html>

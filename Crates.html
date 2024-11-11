@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="nl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Schatkist</title>
+    <link rel="stylesheet" href="css/Crates.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="js/bananacounter.js"></script>
+</head>
+
+<body>
+    <nav id="navbar">
+        <div class="logo">
+            <img src="images/Schermafbeelding 2024-11-06 095026.png" alt="Logo">
+        </div>
+        <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="MiniGames.html">Mini Games</a></li>
+            <li><a href="Crates.html">Crates</a></li>
+            <li><a href="#contact">Contact</a></li>
+            <li><a href="Valuta.html">Valuta</a></li>
+            <li><a href="#" id="login-btn">Login</a></li>
+        </ul>
+        <div class="balance">
+            <img src="images/Schermafbeelding 2024-11-06 095026.png" alt="BananaCoins" class="banana-icon">
+            <span id="banana-balance">1000</span> -BananaCoins
+        </div>
+    </nav>
+
+    <header class="hero" id="home">
+        <div class="hero-text">
+            <h1>Crates and Prices</h1>
+            <h3>Open crates with coins earned in-game</h3>
+        </div>
+    </header>
+
+    <section class="content-section" id="crates">
+        <div class="crate-row">
+            <div class="crate">
+                <img src="Afbeeldingen page 2/Chest 1.jpg" alt="Common Crate" class="crate-image">
+                <h2>Common Crate</h2>
+                <p>Price: 100 BananaCoins</p>
+                <button class="buy-button" onclick="buyCrate(100)">Buy</button>
+            </div>
+            <div class="crate">
+                <img src="Afbeeldingen page 2/Chest 2.png" alt="Rare Crate" class="crate-image">
+                <h2>Rare Crate</h2>
+                <p>Price: 500 BananaCoins</p>
+                <button class="buy-button" onclick="buyCrate(500)">Buy</button>
+            </div>
+            <div class="crate">
+                <img src="Afbeeldingen page 2/Chest 3.png" alt="Very Rare Crate" class="crate-image">
+                <h2>Very Rare Crate</h2>
+                <p>Price: 1000 BananaCoins</p>
+                <button class="buy-button" onclick="buyCrate(1000)">Buy</button>
+            </div>
+        </div>
+        <div class="crate-row">
+            <div class="crate">
+                <img src="Afbeeldingen page 2/Chest 4.png" alt="Epic Crate" class="crate-image">
+                <h2>Epic Crate</h2>
+                <p>Price: 2500 BananaCoins</p>
+                <button class="buy-button" onclick="buyCrate(2500)">Buy</button>
+            </div>
+            <div class="crate">
+                <img src="Afbeeldingen page 2/Chest 5.png" alt="Mythical Crate" class="crate-image">
+                <h2>Mythical Crate</h2>
+                <p>Price: 5000 BananaCoins</p>
+                <button class="buy-button" onclick="buyCrate(5000)">Buy</button>
+            </div>
+            <div class="crate">
+                <img src="Afbeeldingen page 2/Chest 6.png" alt="Legendary Crate" class="crate-image">
+                <h2>Legendary Crate</h2>
+                <p>Price: 10000 BananaCoins</p>
+                <button class="buy-button" onclick="buyCrate(10000)">Buy</button>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer" id="contact">
+        <div class="footer-content">
+            <img src="images/Schermafbeelding 2024-11-06 105418.png" alt="footer image" class="footer-image">
+            <div class="footer-text">
+                <p>&copy; 2024 The Banana War. All rights reserved.</p>
+                <p>Contact us: info@thebananawar.com</p>
+                <div class="social-media">
+                    <a href="#"><img src="images/facebook-icon.png" alt="Facebook"></a>
+                    <a href="#"><img src="images/twitter-icon.png" alt="Twitter"></a>
+                    <a href="#"><img src="images/instagram-icon.png" alt="Instagram"></a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <div class="bottombar">
+        <div class="bottombar-content">
+            <p>Contact EA Sports: <a href="mailto:support@ea.com">support@ea.com</a></p>
+        </div>
+    </div>
+
+    <!-- Modal for Login and Registration -->
+    <div id="login-modal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <div id="login-form">
+                <h2>Login</h2>
+                <input type="text" id="login-username" placeholder="Username">
+                <input type="password" id="login-password" placeholder="Password">
+                <button onclick="login()">Login</button>
+                <p>Don't have an account? <a href="#" id="show-register">Register here</a></p>
+            </div>
+            <div id="register-form" style="display: none;">
+                <h2>Register</h2>
+                <input type="text" id="register-username" placeholder="Username">
+                <input type="password" id="register-password" placeholder="Password">
+                <button onclick="register()">Register</button>
+                <p>Already have an account? <a href="#" id="show-login">Login here</a></p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        $(document).ready(function () {
+            // Load balance from localStorage
+            var balanceElement = document.getElementById("banana-balance");
+            var storedBalance = localStorage.getItem("bananaBalance");
+            if (storedBalance !== null) {
+                balanceElement.textContent = storedBalance;
+            }
+
+            $('a[href^="#"]').on('click', function (event) {
+                var target = $(this.getAttribute('href'));
+                if (target.length) {
+                    event.preventDefault();
+                    $('html, body').stop().animate({
+                        scrollTop: target.offset().top
+                    }, 1000);
+                }
+            });
+
+            // Modal functionality
+            var modal = document.getElementById("login-modal");
+            var btn = document.getElementById("login-btn");
+            var span = document.getElementsByClassName("close")[0];
+
+            btn.onclick = function () {
+                modal.style.display = "block";
+            }
+
+            span.onclick = function () {
+                modal.style.display = "none";
+            }
+
+            window.onclick = function (event) {
+                if (event.target == modal) {
+                    modal.style.display = "none";
+                }
+            }
+
+            $('#show-register').click(function () {
+                $('#login-form').hide();
+                $('#register-form').show();
+            });
+
+            $('#show-login').click(function () {
+                $('#register-form').hide();
+                $('#login-form').show();
+            });
+        });
+
+        function buyCrate(price) {
+            var balanceElement = document.getElementById("banana-balance");
+            var currentBalance = parseInt(balanceElement.textContent);
+            if (currentBalance >= price) {
+                currentBalance -= price;
+                balanceElement.textContent = currentBalance;
+                localStorage.setItem("bananaBalance", currentBalance); 
+                alert("Crate purchased successfully!");
+            } else {
+                alert("Insufficient BananaCoins!");
+            }
+        }
+    </script>
+</body>
+
+</html>
